@@ -30,6 +30,8 @@ def inference(model_inputs:dict) -> dict:
 
     # Parse out your arguments
     prompt = model_inputs.get('prompt', None)
+    max_length = model_inputs.get('max_length', None)
+    do_sample = model_inputs.get('do_sample', None)
     if prompt == None:
         return {'message': "No prompt provided"}
     
@@ -37,7 +39,11 @@ def inference(model_inputs:dict) -> dict:
     input_tokens = tokenizer.encode(prompt, return_tensors="pt").to(device)
 
     # Run the model
-    output = model.generate(input_tokens)
+    output = model.generate(
+        input_tokens,
+        max_length=max_length,
+        do_sample=do_sample
+        )
 
     # Decode output tokens
     output_text = tokenizer.batch_decode(output, skip_special_tokens = True)[0]

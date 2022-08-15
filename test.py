@@ -2,9 +2,11 @@
 # Run it with `python3 test.py``
 
 import requests
+import json
 
-model_inputs = {'prompt': 'My favorite part about working with AI is'}
+model_inputs = {'prompt': 'My favorite part about working with AI is', 'max_length':500, 'do_sample':True}
+
 
 res = requests.post('http://localhost:8000/', json = model_inputs)
-
-print(res.json())
+res_dict = json.loads(res.text)
+print(res_dict['output'])
